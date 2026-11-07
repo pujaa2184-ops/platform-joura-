@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOURA - Journey of Reflection and Achievement</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f172a; /* Nuansa Adventure/RPG Midnight */
+      color: #e2e8f0;
+    }
+    .level-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .level-card:hover {
+      transform: translateY(-6px);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+  <!-- Header Navigation -->
+  <header class="bg-slate-900/90 backdrop-blur-md text-white shadow-xl sticky top-0 z-50 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showSubjectSelection()">
+        <div class="bg-gradient-to-tr from-amber-400 to-amber-600 p-2.5 rounded-2xl text-slate-950 font-black text-xl flex items-center justify-center w-11 h-11 shadow-lg shadow-amber-500/20">
+          J
+        </div>
+        <div>
+          <h1 class="font-extrabold text-xl tracking-tight leading-none text-white">JOURA</h1>
+          <p class="text-[11px] text-amber-300 font-semibold tracking-wide mt-0.5">Journey of Reflection & Achievement</p>
+        </div>
+      </div>
+      
+      <!-- Current Subject Indicator & Menu -->
+      <div class="flex items-center space-x-3">
+        <button id="subjectBadge" onclick="showSubjectSelection()" class="hidden bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow-sm">
+          <i data-lucide="book-open" class="w-4 h-4 text-amber-400"></i>
+          <span id="currentSubjectName">Mata Pelajaran</span>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+        </button>
+        
+        <div class="flex items-center space-x-2 bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-700 shadow-sm">
+          <i data-lucide="award" class="w-4 h-4 text-amber-400"></i>
+          <span class="text-xs font-bold text-amber-200">Explorer Lv. 3</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+
+    <!-- VIEW 1: SUBJECT SELECTION -->
+    <section id="subjectSelectionView" class="space-y-6">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="bg-amber-500/10 text-amber-400 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-500/20">Pilih Ruang Mata Pelajaran</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-4 mb-3 tracking-tight">E-Portfolio Adventure Map</h2>
+        <p class="text-slate-400 text-sm sm:text-base">Pilih mata pelajaran di bawah ini untuk menelusuri misi tugas, dialog umpan balik guru, revisi, refleksi, dan grafik pencapaian belajarmu.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- 1. Bahasa Inggris -->
+        <div onclick="selectSubject('Bahasa Inggris')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-indigo-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="languages" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">Bahasa Inggris</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">3 Tugas • 2 Feedback Aktif • 1 Revisi</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Matematika -->
+        <div onclick="selectSubject('Matematika')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-blue-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="calculator" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">Matematika</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">2 Tugas • 1 Feedback Aktif • 1 Revisi</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Sejarah -->
+        <div onclick="selectSubject('Sejarah')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-amber-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-amber-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="landmark" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">Sejarah</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">2 Tugas • 1 Feedback Aktif • Selesai</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Pendidikan Kewarganegaraan (PPKn) -->
+        <div onclick="selectSubject('Pendidikan Kewarganegaraan')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-emerald-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="shield-check" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">PPKn</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">1 Tugas • 1 Feedback Aktif • Siap Refleksi</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Bahasa Indonesia -->
+        <div onclick="selectSubject('Bahasa Indonesia')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-rose-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-rose-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-rose-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="book-open-check" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">Bahasa Indonesia</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">3 Tugas • 2 Feedback Aktif • 2 Revisi</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Ilmu Pengetahuan Alam (IPA) -->
+        <div onclick="selectSubject('Ilmu Pengetahuan Alam')" class="bg-slate-900 rounded-3xl p-6 shadow-lg hover:shadow-2xl border border-slate-800 hover:border-amber-500 cursor-pointer transition group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-teal-500/10 rounded-bl-full -z-0 group-hover:scale-110 transition"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-teal-600/30 group-hover:rotate-6 transition">
+              <i data-lucide="flask-conical" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-lg font-bold mt-5 text-white group-hover:text-amber-400 transition">Ilmu Pengetahuan Alam</h3>
+            <p class="text-xs text-slate-400 mt-1 font-medium">2 Tugas • 1 Feedback Aktif • 1 Revisi</p>
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
+              <span>Jelajahi Map Quest</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: LEARNING JOURNEY MAP & FEATURES -->
+    <section id="journeyMapView" class="hidden space-y-8">
+      
+      <!-- Adventure Map Header Banner -->
+      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-slate-800">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <div class="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-widest">
+              <i data-lucide="map" class="w-4 h-4"></i>
+              <span>Adventure Game Learning Map</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black mt-1 text-white" id="selectedSubjectTitle">Mata Pelajaran</h2>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Pilih salah satu dari 5 level di bawah untuk mengakses tahapan pembelajaran.</p>
+          </div>
+          <button onclick="showSubjectSelection()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-4 py-2.5 rounded-xl font-bold border border-slate-700 transition flex items-center gap-2 shadow-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Ganti Mata Pelajaran
+          </button>
+        </div>
+      </div>
+
+      <!-- Gamified Interactive 5 Levels Map -->
+      <div class="bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6 flex items-center gap-2">
+          <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i> Peta Perjalanan Belajar (5 Level Utama)
+        </h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          
+          <!-- Node 1: SUBMIT -->
+          <div onclick="openLevel(1)" id="node1" class="level-card cursor-pointer bg-slate-800/80 hover:bg-slate-800 border-2 border-indigo-500 rounded-2xl p-5 text-center shadow-md">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg mb-3 shadow-md">
+              1
+            </div>
+            <h4 class="font-bold text-white text-sm">SUBMIT</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Unggah Tugas</p>
+            <span class="inline-block mt-3 text-[10px] font-extrabold text-indigo-300 bg-indigo-950 px-2.5 py-1 rounded-full border border-indigo-800">Level 1</span>
+          </div>
+
+          <!-- Node 2: FEEDBACK -->
+          <div onclick="openLevel(2)" id="node2" class="level-card cursor-pointer bg-slate-800/80 hover:bg-slate-800 border-2 border-slate-700 rounded-2xl p-5 text-center shadow-md">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-700 text-slate-300 flex items-center justify-center font-black text-lg mb-3 shadow-sm">
+              2
+            </div>
+            <h4 class="font-bold text-white text-sm">FEEDBACK</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Umpan Balik Guru</p>
+            <span class="inline-block mt-3 text-[10px] font-extrabold text-slate-300 bg-slate-700 px-2.5 py-1 rounded-full">Level 2</span>
+          </div>
+
+          <!-- Node 3: REVISION -->
+          <div onclick="openLevel(3)" id="node3" class="level-card cursor-pointer bg-slate-800/80 hover:bg-slate-800 border-2 border-slate-700 rounded-2xl p-5 text-center shadow-md">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-700 text-slate-300 flex items-center justify-center font-black text-lg mb-3 shadow-sm">
+              3
+            </div>
+            <h4 class="font-bold text-white text-sm">REVISION</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Perbaikan Tugas</p>
+            <span class="inline-block mt-3 text-[10px] font-extrabold text-slate-300 bg-slate-700 px-2.5 py-1 rounded-full">Level 3</span>
+          </div>
+
+          <!-- Node 4: REFLECTION -->
+          <div onclick="openLevel(4)" id="node4" class="level-card cursor-pointer bg-slate-800/80 hover:bg-slate-800 border-2 border-slate-700 rounded-2xl p-5 text-center shadow-md">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-700 text-slate-300 flex items-center justify-center font-black text-lg mb-3 shadow-sm">
+              4
+            </div>
+            <h4 class="font-bold text-white text-sm">REFLECTION</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Evaluasi Diri</p>
+            <span class="inline-block mt-3 text-[10px] font-extrabold text-slate-300 bg-slate-700 px-2.5 py-1 rounded-full">Level 4</span>
+          </div>
+
+          <!-- Node 5: MY LEARNING PROGRESS -->
+          <div onclick="openLevel(5)" id="node5" class="level-card cursor-pointer bg-slate-800/80 hover:bg-slate-800 border-2 border-slate-700 rounded-2xl p-5 text-center shadow-md">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-700 text-slate-300 flex items-center justify-center font-black text-lg mb-3 shadow-sm">
+              5
+            </div>
+            <h4 class="font-bold text-white text-sm">PROGRESS</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Grafik & Capaian</p>
+            <span class="inline-block mt-3 text-[10px] font-extrabold text-slate-300 bg-slate-700 px-2.5 py-1 rounded-full">Level 5</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ACTIVE LEVEL CONTENT CONTAINER -->
+      <div id="levelContentContainer" class="bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800">
+        
+        <!-- LEVEL 1 CONTENT: SUBMIT -->
+        <div id="level1Content" class="level-panel space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <span class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">Level 1</span>
+              <h3 class="text-xl font-black text-white">SUBMIT — Pengumpulan Tugas Kronologis</h3>
+            </div>
+            <div class="p-3 bg-indigo-950 text-indigo-400 rounded-2xl border border-indigo-900">
+              <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <!-- Form Upload Tugas -->
+          <form onsubmit="handleTaskSubmit(event)" class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 space-y-4">
+            <h4 class="font-bold text-sm text-white flex items-center gap-2">
+              <i data-lucide="file-plus" class="w-4 h-4 text-amber-400"></i> Unggah Berkas Tugas Baru
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5">Judul Tugas / Sesi</label>
+                <input type="text" id="taskTitleInput" required placeholder="Contoh: Tugas 3 - Analisis Materi" class="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 text-white focus:ring-2 focus:ring-amber-500 text-sm outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5">Format Berkas</label>
+                <select id="taskTypeInput" class="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 text-white focus:ring-2 focus:ring-amber-500 text-sm outline-none">
+                  <option value="Dokumen Teks (.pdf, .docx)">Dokumen Teks (.pdf, .docx)</option>
+                  <option value="Video (.mp4)">Video (.mp4)</option>
+                  <option value="Audio (.mp3)">Audio (.mp3)</option>
+                  <option value="Gambar (.png, .jpg)">Gambar (.png, .jpg)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Pilih Berkas</label>
+              <input type="file" id="taskFileInput" required class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-amber-300 hover:file:bg-slate-600 cursor-pointer bg-slate-900 border border-slate-700 rounded-xl">
+            </div>
+            <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i> Simpan ke Folder SUBMIT
+            </button>
+          </form>
+
+          <!-- List Folder Tugas Kronologis -->
+          <div>
+            <h4 class="font-bold text-sm text-white mb-3">Folder Tugas Tersimpan (Kronologis)</h4>
+            <div id="submittedTasksList" class="space-y-3">
+              <div class="p-4 bg-slate-800/80 rounded-2xl border border-slate-700 flex items-center justify-between shadow-sm">
+                <div class="flex items-center space-x-3.5">
+                  <div class="p-3 bg-indigo-950 text-indigo-400 rounded-xl border border-indigo-900">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-white text-sm">Tugas 1: Lembar Kerja Utama</h5>
+                    <p class="text-xs text-slate-400 font-medium">Diunggah secara kronologis • Format: PDF • Status: Dinilai</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-emerald-400 bg-emerald-950 border border-emerald-800 px-3 py-1.5 rounded-xl">Tersimpan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 2 CONTENT: FEEDBACK (DIALOG NATURALLY ENRICHED) -->
+        <div id="level2Content" class="level-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <span class="text-xs font-extrabold text-blue-400 uppercase tracking-wider">Level 2</span>
+              <h3 class="text-xl font-black text-white">FEEDBACK — Ruang Diskusi & Umpan Balik Guru</h3>
+            </div>
+            <div class="p-3 bg-blue-950 text-blue-400 rounded-2xl border border-blue-900">
+              <i data-lucide="message-square" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <!-- Kotak Umpan Balik & Percakapan Interaktif -->
+          <div class="space-y-4">
+            <div class="p-5 bg-slate-800/60 border border-slate-700 rounded-2xl space-y-4 shadow-sm">
+              
+              <!-- Info Tugas Terkait -->
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-[11px] font-extrabold text-blue-300 bg-blue-950 border border-blue-800 px-3 py-1 rounded-full">Tugas 1: Lembar Kerja Utama</span>
+                  <p class="text-xs text-slate-400 font-medium mt-1.5">Topik: Analisis & Struktur Penulisan</p>
+                </div>
+                <button onclick="openLevel(1)" class="text-xs text-amber-400 font-bold hover:underline flex items-center gap-1 bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-700">
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Cek Tugas Asli
+                </button>
+              </div>
+
+              <!-- Riwayat Dialog Guru & Siswa yang Hidup dan Natural -->
+              <div id="chatHistory" class="space-y-3 pt-2">
+                
+                <!-- Catatan Awal Guru -->
+                <div class="flex items-start gap-3 bg-blue-950/40 p-3.5 rounded-2xl border border-blue-900/50">
+                  <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    👨‍🏫
+                  </div>
+                  <div class="text-xs space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-blue-300">Pak Guru / Bu Guru</span>
+                      <span class="text-[10px] text-slate-500">Kemarin, 14:30</span>
+                    </div>
+                    <p class="text-slate-300">"Halo! Analisis data kamu udah rapi banget dan logis. Cuman, coba cek lagi daftar pustakanya ya, formatnya belum pakai standar APA edisi terbaru. Coba dirapiin sebelum lanjut ke tahap revisi!"</p>
+                  </div>
+                </div>
+
+                <!-- Respon Balasan Siswa -->
+                <div class="flex items-start gap-3 bg-slate-900 p-3.5 rounded-2xl border border-slate-800 ml-4 sm:ml-8">
+                  <div class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    👩‍🎓
+                  </div>
+                  <div class="text-xs space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-amber-300">Kamu (Siswa)</span>
+                      <span class="text-[10px] text-slate-500">Kemarin, 15:10</span>
+                    </div>
+                    <p class="text-slate-300">"Oh iya, Pak/Bu! Maaf kelewat bagian format APA-nya. Ntar saya perbaiki pakai generator sitasi biar pas. Mau nanya juga, kalau untuk penulisan judul jurnal di daftar pustaka perlu dimiringkan nggak ya?"</p>
+                  </div>
+                </div>
+
+                <!-- Guru Menjawab Pertanyaan Siswa -->
+                <div class="flex items-start gap-3 bg-blue-950/40 p-3.5 rounded-2xl border border-blue-900/50">
+                  <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    👨‍🏫
+                  </div>
+                  <div class="text-xs space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-blue-300">Pak Guru / Bu Guru</span>
+                      <span class="text-[10px] text-slate-500">Hari ini, 08:15</span>
+                    </div>
+                    <p class="text-slate-300">"Betul sekali, judul artikel jurnalnya dimiringkan, tapi nama jurnal utamanya tetap biasa ya. Semangat perbaikannya!"</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Input Kirim Tanggapan Baru (Interaktif) -->
+              <div class="pt-3 border-t border-slate-700/60">
+                <div class="flex gap-2">
+                  <input type="text" id="feedbackResponseInput" placeholder="Ketik balasan atau pertanyaan ke guru..." class="flex-1 px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 text-white text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                  <button onclick="sendFeedbackResponse()" class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5">
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Chat
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 3 CONTENT: REVISION -->
+        <div id="level3Content" class="level-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <span class="text-xs font-extrabold text-amber-400 uppercase tracking-wider">Level 3</span>
+              <h3 class="text-xl font-black text-white">REVISION — Hasil Perbaikan Tugas</h3>
+            </div>
+            <div class="p-3 bg-amber-950 text-amber-400 rounded-2xl border border-amber-900">
+              <i data-lucide="rotate-ccw" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <!-- Form Unggah Revisi -->
+          <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-sm">
+            <h4 class="font-bold text-sm text-white flex items-center gap-2">
+              <i data-lucide="file-edit" class="w-4 h-4 text-amber-400"></i> Unggah Berkas Hasil Revisi Berdasarkan Umpan Balik
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5">Pilih Tugas Terkait</label>
+                <select class="w-full px-4 py-3 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none font-medium">
+                  <option>Tugas 1: Lembar Kerja Utama</option>
+                  <option>Tugas 2: Praktik Presentasi / Proyek</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5">Unggah Berkas Revisi</label>
+                <input type="file" class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-amber-300 hover:file:bg-slate-600 cursor-pointer bg-slate-900 border border-slate-700 rounded-xl">
+              </div>
+            </div>
+            <button onclick="alert('Hasil revisi berhasil disimpan ke folder REVISION!');" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm rounded-xl transition shadow-md">
+              Simpan Hasil Revisi
+            </button>
+          </div>
+
+          <!-- Comparison View Box -->
+          <div class="border border-slate-700 rounded-2xl p-6 space-y-4 shadow-sm bg-slate-800/80">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <h4 class="font-bold text-white text-sm">Folder Revisi: Tugas 1 (Lembar Kerja Utama)</h4>
+              <button onclick="toggleOriginalView()" id="toggleViewBtn" class="text-xs bg-slate-900 hover:bg-slate-700 text-amber-300 px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition border border-slate-700">
+                <i data-lucide="eye" class="w-4 h-4"></i> View Original Submission
+              </button>
+            </div>
+
+            <!-- Original Submission Display Toggle -->
+            <div id="originalSubmissionBox" class="hidden p-4 bg-slate-900 rounded-xl border border-slate-700 text-xs text-slate-400 space-y-1">
+              <p class="font-bold text-slate-300 uppercase tracking-wide text-[10px]">Tugas Awal (Sebelum Revisi):</p>
+              <p class="italic text-slate-400">"Analisis data menunjukkan tren peningkatan, namun referensi pustaka masih belum menggunakan standar APA."</p>
+            </div>
+
+            <div class="p-4 bg-emerald-950/60 rounded-xl border border-emerald-800 text-xs text-emerald-200 space-y-1">
+              <p class="font-bold text-emerald-300 uppercase tracking-wide text-[10px]">Hasil Revisi Terbaru (Setelah Feedback):</p>
+              <p class="italic text-emerald-200">"Analisis data menunjukkan tren peningkatan secara signifikan, lengkap dengan daftar pustaka berstandar APA edisi terbaru."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 4 CONTENT: REFLECTION -->
+        <div id="level4Content" class="level-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <span class="text-xs font-extrabold text-purple-400 uppercase tracking-wider">Level 4</span>
+              <h3 class="text-xl font-black text-white">REFLECTION — Jurnal Refleksi Pembelajaran</h3>
+            </div>
+            <div class="p-3 bg-purple-950 text-purple-400 rounded-2xl border border-purple-900">
+              <i data-lucide="brain" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <form onsubmit="handleReflectionSubmit(event)" class="space-y-5 bg-slate-800/60 p-6 rounded-2xl border border-slate-700 shadow-sm">
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">1. Apa yang kamu pelajari dari tugas ini?</label>
+              <textarea rows="2" required class="w-full p-3.5 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none focus:ring-2 focus:ring-purple-500" placeholder="Tuliskan pemahaman barumu..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">2. Kesulitan apa yang kamu hadapi saat menyelesaikan tugas ini?</label>
+              <textarea rows="2" required class="w-full p-3.5 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none focus:ring-2 focus:ring-purple-500" placeholder="Tuliskan kendala yang kamu rasakan..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">3. Bagian apa dari hasil pekerjaanmu yang menurutmu masih perlu diperbaiki?</label>
+              <textarea rows="2" required class="w-full p-3.5 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none focus:ring-2 focus:ring-purple-500" placeholder="Evaluasi aspek perbaikan..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">4. Bagaimana umpan balik yang diberikan membantumu memperbaiki hasil pekerjaanmu?</label>
+              <textarea rows="2" required class="w-full p-3.5 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none focus:ring-2 focus:ring-purple-500" placeholder="Jelaskan peran feedback guru..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1.5">5. Apa yang akan kamu lakukan secara berbeda ketika mengerjakan tugas berikutnya?</label>
+              <textarea rows="2" required class="w-full p-3.5 rounded-xl border border-slate-700 bg-slate-900 text-white text-sm outline-none focus:ring-2 focus:ring-purple-500" placeholder="Langkah perbaikan ke depan..."></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm rounded-xl transition shadow-md flex items-center justify-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Simpan Jurnal Refleksi
+            </button>
+          </form>
+        </div>
+
+        <!-- LEVEL 5 CONTENT: MY LEARNING PROGRESS -->
+        <div id="level5Content" class="level-panel hidden space-y-8">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800 gap-2">
+            <div>
+              <span class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider">Level 5</span>
+              <h3 class="text-xl font-black text-white">MY LEARNING PROGRESS — Perkembangan & Capaian</h3>
+            </div>
+            <div class="p-3 bg-emerald-950 text-emerald-400 rounded-2xl border border-emerald-900">
+              <i data-lucide="trending-up" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <!-- Component A: Learning Growth Chart -->
+          <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 shadow-sm">
+            <h4 class="font-bold text-sm text-white mb-1">A. Learning Growth Chart</h4>
+            <p class="text-xs text-slate-400 mb-4 font-medium">Visualisasi perkembangan nilai secara bertahap antar tugas melalui diagram garis.</p>
+            <div class="h-72 w-full bg-slate-900 p-4 rounded-xl border border-slate-800">
+              <canvas id="growthChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Component B: Revision Improvement -->
+          <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 shadow-sm">
+            <h4 class="font-bold text-sm text-white mb-3">B. Revision Improvement</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex justify-between items-center shadow-xs">
+                <div>
+                  <p class="text-xs text-white font-bold">Tugas 1: Lembar Kerja Utama</p>
+                  <p class="text-xs text-slate-400 mt-1">Awal: <span class="font-bold text-slate-200">65</span> → Sesudah Revisi: <span class="font-bold text-emerald-400">85</span></p>
+                </div>
+                <span class="text-xs font-extrabold text-emerald-300 bg-emerald-950 border border-emerald-800 px-3 py-1.5 rounded-xl">+20 Poin</span>
+              </div>
+              <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex justify-between items-center shadow-xs">
+                <div>
+                  <p class="text-xs text-white font-bold">Tugas 2: Praktik Presentasi</p>
+                  <p class="text-xs text-slate-400 mt-1">Awal: <span class="font-bold text-slate-200">70</span> → Sesudah Revisi: <span class="font-bold text-emerald-400">88</span></p>
+                </div>
+                <span class="text-xs font-extrabold text-emerald-300 bg-emerald-950 border border-emerald-800 px-3 py-1.5 rounded-xl">+18 Poin</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component C: Learning Achievement Badges -->
+          <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700 shadow-sm">
+            <h4 class="font-bold text-sm text-white mb-1">C. Learning Achievement (Lencana Penghargaan)</h4>
+            <p class="text-xs text-slate-400 mb-5 font-medium">Lencana diperoleh saat menyelesaikan aktivitas atau mencapai target pembelajaran.</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center flex flex-col items-center shadow-xs hover:border-amber-500 transition">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3 border border-amber-500/20">
+                  <i data-lucide="flag" class="w-6 h-6"></i>
+                </div>
+                <h5 class="font-bold text-xs text-white">First Step</h5>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">Pengumpulan Pertama</p>
+              </div>
+
+              <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center flex flex-col items-center shadow-xs hover:border-blue-500 transition">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3 border border-blue-500/20">
+                  <i data-lucide="message-circle" class="w-6 h-6"></i>
+                </div>
+                <h5 class="font-bold text-xs text-white">Feedback Seeker</h5>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">Merespon Umpan Balik</p>
+              </div>
+
+              <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center flex flex-col items-center shadow-xs hover:border-amber-500 transition">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3 border border-amber-500/20">
+                  <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h5 class="font-bold text-xs text-white">Revision Rookie</h5>
+                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">Selesaikan Revisi 1</p>
+              </div>
+
+              <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center flex flex-col items-center shadow-xs opacity-60">
+                <div class="w-12 h-12 rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center mb-3">
+                  <i data-lucide="award" class="w-6 h-6"></i>
+                </div>
+                <h5 class="font-bold text-xs text-slate-300">Reflection Master</h5>
+                <p class="text-[10px] text-slate-500 mt-0.5 font-medium">Selesaikan 5 Refleksi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 font-medium">
+      &copy; 2026 <b>JOURA</b> (Journey of Reflection and Achievement). E-Portfolio Dialogis Berbasis Gamifikasi.
+    </div>
+  </footer>
+
+  <!-- JavaScript Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+
+    let chartInstance = null;
+
+    function selectSubject(subjectName) {
+      document.getElementById('subjectSelectionView').classList.add('hidden');
+      document.getElementById('journeyMapView').classList.remove('hidden');
+      document.getElementById('subjectBadge').classList.remove('hidden');
+      
+      document.getElementById('currentSubjectName').innerText = subjectName;
+      document.getElementById('selectedSubjectTitle').innerText = subjectName;
+      
+      openLevel(1);
+    }
+
+    function showSubjectSelection() {
+      document.getElementById('subjectSelectionView').classList.remove('hidden');
+      document.getElementById('journeyMapView').classList.add('hidden');
+      document.getElementById('subjectBadge').classList.add('hidden');
+    }
+
+    function openLevel(levelNumber) {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`level${i}Content`).classList.add('hidden');
+      }
+
+      document.getElementById(`level${levelNumber}Content`).classList.remove('hidden');
+
+      const colors = {
+        1: { border: 'border-indigo-500', light: 'bg-indigo-950/80' },
+        2: { border: 'border-blue-500', light: 'bg-blue-950/80' },
+        3: { border: 'border-amber-500', light: 'bg-amber-950/80' },
+        4: { border: 'border-purple-500', light: 'bg-purple-950/80' },
+        5: { border: 'border-emerald-500', light: 'bg-emerald-950/80' }
+      };
+
+      for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById(`node${i}`);
+        node.className = "level-card cursor-pointer bg-slate-800/80 border-2 border-slate-700 rounded-2xl p-5 text-center shadow-md";
+      }
+
+      const activeNode = document.getElementById(`node${levelNumber}`);
+      const c = colors[levelNumber];
+      activeNode.className = `level-card cursor-pointer ${c.light} border-2 ${c.border} rounded-2xl p-5 text-center shadow-lg scale-105`;
+
+      if (levelNumber === 5) {
+        setTimeout(renderGrowthChart, 100);
+      }
+
+      document.getElementById('levelContentContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      lucide.createIcons();
+    }
+
+    function toggleOriginalView() {
+      const box = document.getElementById('originalSubmissionBox');
+      const btn = document.getElementById('toggleViewBtn');
+      box.classList.toggle('hidden');
+      if (!box.classList.contains('hidden')) {
+        btn.innerHTML = `<i data-lucide="eye-off" class="w-4 h-4"></i> Sembunyikan Tugas Asal`;
+      } else {
+        btn.innerHTML = `<i data-lucide="eye" class="w-4 h-4"></i> View Original Submission`;
+      }
+      lucide.createIcons();
+    }
+
+    function handleTaskSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('taskTitleInput').value;
+      const type = document.getElementById('taskTypeInput').value;
+      
+      const list = document.getElementById('submittedTasksList');
+      const newItem = document.createElement('div');
+      newItem.className = "p-4 bg-slate-800/80 rounded-2xl border border-slate-700 flex items-center justify-between shadow-sm";
+      newItem.innerHTML = `
+        <div class="flex items-center space-x-3.5">
+          <div class="p-3 bg-indigo-950 text-indigo-400 rounded-xl border border-indigo-900">
+            <i data-lucide="file-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h5 class="font-bold text-white text-sm">${title}</h5>
+            <p class="text-xs text-slate-400 font-medium">Diunggah: Baru saja • Format: ${type}</p>
+          </div>
+        </div>
+        <span class="text-xs font-bold text-emerald-400 bg-emerald-950 border border-emerald-800 px-3 py-1.5 rounded-xl">Tersimpan</span>
+      `;
+      list.prepend(newItem);
+      lucide.createIcons();
+      alert('Tugas berhasil diunggah ke Level 1 (SUBMIT)!');
+      document.getElementById('taskTitleInput').value = '';
+      document.getElementById('taskFileInput').value = '';
+    }
+
+    // Fungsi Dialog Interaktif Guru & Siswa di Level 2
+    function sendFeedbackResponse() {
+      const input = document.getElementById('feedbackResponseInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatHistory = document.getElementById('chatHistory');
+      
+      // Buat elemen chat baru dari siswa
+      const newMsg = document.createElement('div');
+      newMsg.className = "flex items-start gap-3 bg-slate-900 p-3.5 rounded-2xl border border-slate-800 ml-4 sm:ml-8 animate-fade-in";
+      newMsg.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+          👩‍🎓
+        </div>
+        <div class="text-xs space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-amber-300">Kamu (Siswa)</span>
+            <span class="text-[10px] text-slate-500">Baru saja</span>
+          </div>
+          <p class="text-slate-300">"${text}"</p>
+        </div>
+      `;
+      chatHistory.appendChild(newMsg);
+      input.value = '';
+
+      // Simulasi guru merespon otomatis setelah 1,5 detik agar interaksinya hidup
+      setTimeout(() => {
+        const teacherReply = document.createElement('div');
+        teacherReply.className = "flex items-start gap-3 bg-blue-950/40 p-3.5 rounded-2xl border border-blue-900/50 animate-fade-in";
+        teacherReply.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+            👨‍🏫
+          </div>
+          <div class="text-xs space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-blue-300">Pak Guru / Bu Guru</span>
+              <span class="text-[10px] text-slate-500">Baru saja</span>
+            </div>
+            <p class="text-slate-300">"Catatan bagus! Silakan dilanjutkan ke tahap revisi jika sudah paham ya."</p>
+          </div>
+        `;
+        chatHistory.appendChild(teacherReply);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+      }, 1500);
+
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function handleReflectionSubmit(e) {
+      e.preventDefault();
+      alert('Jurnal refleksi diri berhasil disimpan! Poin pencapaian level refleksi tercatat.');
+    }
+
+    function renderGrowthChart() {
+      const canvasEl = document.getElementById('growthChart');
+      if (!canvasEl) return;
+      const ctx = canvasEl.getContext('2d');
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Tugas 1 (Awal)', 'Tugas 1 (Revisi)', 'Tugas 2 (Awal)', 'Tugas 2 (Revisi)'],
+          datasets: [{
+            label: 'Perkembangan Nilai Akademik',
+            data: [65, 85, 70, 88],
+            borderColor: '#34d399',
+            backgroundColor: 'rgba(52, 211, 153, 0.1)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 6,
+            pointBackgroundColor: '#059669',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: 50,
+              max: 100,
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' }
+            },
+            x: {
+              grid: { color: '#334155' },
+              ticks: { color: '#94a3b8' }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
